@@ -1,7 +1,7 @@
 import { Dispatch } from 'redux'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {authAPI} from "api/todolist-api";
-import {authActions} from "features/auth-reducer";
+import {authActions} from "features/auth/auth-reducer";
 
 
 const initialState = {
