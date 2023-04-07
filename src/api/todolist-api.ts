@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {AddTaskArgType} from "state/tasks-reducer";
 
 const settings = {
     withCredentials: true,
@@ -35,8 +36,8 @@ export const todolistsAPI = {
     deleteTask(todolistId: string, taskId: string) {
         return instance.delete<ResponseType>(`todo-lists/${todolistId}/tasks/${taskId}`);
     },
-    createTask(todolistId: string, taskTitile: string) {
-        return instance.post<ResponseType<{ item: TaskType}>>(`todo-lists/${todolistId}/tasks`, {title: taskTitile});
+    createTask(arg:AddTaskArgType) {
+        return instance.post<ResponseType<{ item: TaskType}>>(`todo-lists/${arg.todolistId}/tasks`, {title: arg.title});
     },
     updateTask(todolistId: string, taskId: string, model: UpdateTaskModelType) {
         return instance.put<ResponseType<TaskType>>(`todo-lists/${todolistId}/tasks/${taskId}`, model);
@@ -116,3 +117,9 @@ type GetTasksResponse = {
     totalCount: number
     items: TaskType[]
 }
+
+export const ResultCode = {
+    success: 0,
+    error: 1,
+    captcha: 10
+} as const
