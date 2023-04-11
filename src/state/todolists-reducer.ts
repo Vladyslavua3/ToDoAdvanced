@@ -32,21 +32,51 @@ const fetchTodolists = createAppAsyncThunk<any, any>
 })
 
 
-// const fetchTodolists = createAppAsyncThunk => {
-//
-//         dispatch(appActions.setAppStatus({status: 'loading'}))
-//         todolistsAPI.getTodolists()
+const addTodoList = createAppAsyncThunk<{todolist: TodolistType},{title:string}>
+('todo/addTodo', async (arg,thunkAPI) => {
+    const {dispatch, rejectWithValue} = thunkAPI
+
+
+    try {
+        dispatch(appActions.setAppStatus({status: 'loading'}))
+        const res = await todolistsAPI.createTodolist(arg.title)
+
+        dispatch(todolistsActions.addTodolist({todolist: res.data.data.item}))
+        dispatch(appActions.setAppStatus({status: 'succeeded'}))
+
+        return {todolist: res.data.data.item}
+    }catch (e) {
+        handleServerNetworkError(e, dispatch)
+        return rejectWithValue(null)
+    }
+})
+
+
+// export const changeTodolistTitleTC = (id: string, title: string): AppThunk => {
+//     return (dispatch) => {
+//         todolistsAPI.updateTodolist(id, title)
 //             .then((res) => {
-//                 dispatch(todolistsActions.setTodolists({todolists: res.data}))
-//                 dispatch(appActions.setAppStatus({status: 'succeeded'}))
-//
+//                 dispatch(todolistsActions.changeTodolistTitle({id, title}))
 //             })
-//             .catch(error => {
-//                 handleServerNetworkError(error, dispatch);
-//             })
+//     }
 // }
 
 
+const changeTodoListTitle = createAppAsyncThunk<{ id: string, title: string }, { id: string, title: string }>
+('todo/changeTodoTitle', async (arg, thunkAPI) => {
+    const {dispatch, rejectWithValue} = thunkAPI
+
+    try {
+        const res = await todolistsAPI.updateTodolist({id: arg.id, title: arg.title})
+
+        dispatch(todolistsActions.changeTodolistTitle({id:arg.id,title:arg.title}))
+
+        return {id:arg.id,title:arg.title}
+    } catch (e) {
+        handleServerNetworkError(e, dispatch)
+        return rejectWithValue(null)
+    }
+})
 
 const removeTodolist = createAppAsyncThunk<{ id: string }, any>
 ('todo/removeTodo', async (arg, thunkAPI) => {
@@ -123,49 +153,21 @@ const slice = createSlice({
             .addCase(fetchTodolists.fulfilled,(state, action)=>{
                 state = action.payload.todolist
             })
+            .addCase(addTodoList.fulfilled, (state, action)=>{
+                const newTodolist: TodolistDomainType = {...action.payload.todolist, filter: 'all', entityStatus: 'idle'}
+                state.unshift(newTodolist)
+            })
     }
 })
 
 export const todolistsReducer = slice.reducer
 export const todolistsActions = slice.actions
-export const todolistsThunk = {removeTodolist,fetchTodolists}
+export const todolistsThunk = {removeTodolist,fetchTodolists,addTodoList,changeTodoListTitle}
 
 
 // thunks
 
-// export const fetchTodolistsTC = (): AppThunk => {
-//     return (dispatch) => {
-//         dispatch(appActions.setAppStatus({status: 'loading'}))
-//         todolistsAPI.getTodolists()
-//             .then((res) => {
-//                 dispatch(todolistsActions.setTodolists({todolists: res.data}))
-//                 dispatch(appActions.setAppStatus({status: 'succeeded'}))
-//
-//             })
-//             .catch(error => {
-//                 handleServerNetworkError(error, dispatch);
-//             })
-//     }
-// }
 
-export const addTodolistTC = (title: string): AppThunk => {
-    return (dispatch) => {
-        dispatch(appActions.setAppStatus({status: 'loading'}))
-        todolistsAPI.createTodolist(title)
-            .then((res) => {
-                dispatch(todolistsActions.addTodolist({todolist: res.data.data.item}))
-                dispatch(appActions.setAppStatus({status: 'succeeded'}))
-            })
-    }
-}
-export const changeTodolistTitleTC = (id: string, title: string): AppThunk => {
-    return (dispatch) => {
-        todolistsAPI.updateTodolist(id, title)
-            .then((res) => {
-                dispatch(todolistsActions.changeTodolistTitle({id, title}))
-            })
-    }
-}
 
 // types
 export type FilterValuesType = 'all' | 'active' | 'completed';
