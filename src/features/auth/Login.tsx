@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 import { useAppDispatch } from 'hooks/useAppDispatch';
 import { Button, Checkbox, FormControl, FormControlLabel, FormGroup, FormLabel, Grid, TextField } from '@mui/material'
-import {loginTC} from "features/auth/auth-reducer";
+import {authThunks} from "features/auth/auth-reducer";
 import {AppRootStateType} from "state/store";
 
 export const Login = () => {
@@ -32,7 +32,7 @@ export const Login = () => {
             rememberMe: false
         },
         onSubmit: values => {
-            dispatch(loginTC(values));
+            dispatch(authThunks.login(values));
         },
     })
 

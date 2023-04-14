@@ -25,7 +25,6 @@ const fetchTasks = createAppAsyncThunk<FetchTaskReturnedType,string>
         const res = await todolistsAPI.getTasks(todolistId)
         const tasks = res.data.items
 
-        // dispatch(tasksActions.setTasks({tasks, todolistId}))
         dispatch(appActions.setAppStatus({status: 'succeeded'}))
 
         return {tasks,todolistId}
@@ -114,23 +113,17 @@ const updateTask = createAppAsyncThunk<UpdateTaskArgType, UpdateTaskArgType>
 })
 
 
-export type removeTaskType = {
+export type RemoveTaskType = {
     taskId: string
     todolistId:string
 }
 
-const removeTask = createAppAsyncThunk<removeTaskType,removeTaskType>
-('tasks/removeTask',async (arg,thunkAPI) => {
-
+const removeTask = createAppAsyncThunk<RemoveTaskType, RemoveTaskType>
+('tasks/removeTask', async (arg, thunkAPI) => {
     const {dispatch, rejectWithValue} = thunkAPI
-
     try {
         dispatch(appActions.setAppStatus({status: 'loading'}))
-        const res = await todolistsAPI.deleteTask(arg.todolistId, arg.taskId)
-
-        if(res) dispatch(tasksActions.removeTask({taskId:arg.taskId,todolistId:arg.todolistId}))
-
-
+        const res = await todolistsAPI.deleteTask(arg)
         if (res.data.resultCode === ResultCode.success) {
             dispatch(appActions.setAppStatus({status: 'succeeded'}))
             return arg
@@ -138,57 +131,49 @@ const removeTask = createAppAsyncThunk<removeTaskType,removeTaskType>
             handleServerAppError(res.data, dispatch);
             return rejectWithValue(null)
         }
-    }catch (e) {
+    } catch (e) {
         handleServerNetworkError(e, dispatch)
         return rejectWithValue(null)
     }
-
 })
-
 const initialState: TasksStateType = {}
 
 
 const slice = createSlice({
     name: 'tasks',
     initialState,
-    reducers: {
-        removeTask: (state, action: PayloadAction<{ taskId: string, todolistId: string }>) => {
-            const tasks = state[action.payload.todolistId]
-            const index = tasks.findIndex(t => t.id === action.payload.taskId)
-            if (index !== -1) tasks.splice(index, 1)
-        },
-    },
+    reducers: {},
     extraReducers: builder => {
         builder
-            .addCase(fetchTasks.fulfilled,(state, action)=>{
+            .addCase(fetchTasks.fulfilled, (state, action) => {
                 state[action.payload.todolistId] = action.payload.tasks
             })
-            .addCase(addTask.fulfilled,(state, action)=>{
+            .addCase(addTask.fulfilled, (state, action) => {
                 const tasks = state[action.payload.task.todoListId]
                 tasks.unshift(action.payload.task)
             })
-            .addCase(todolistsActions.addTodolist, (state, action) => {
-                state[action.payload.todolist.id] = []
-            })
-            .addCase(updateTask.fulfilled,(state, action)=>{
+            .addCase(updateTask.fulfilled, (state, action) => {
                 const tasks = state[action.payload.todolistId]
                 const index = tasks.findIndex(t => t.id === action.payload.taskId)
                 if (index !== -1) {
                     tasks[index] = {...tasks[index], ...action.payload.domainModel}
                 }
             })
-            .addCase(todolistsActions.removeTodolist, (state, action) => {
+            .addCase(removeTask.fulfilled, (state, action) => {
+                const tasks = state[action.payload.todolistId]
+                const index = tasks.findIndex(t => t.id === action.payload.taskId)
+                if (index !== -1) tasks.splice(index, 1)
+            })
+            .addCase(todolistsThunk.addTodoList.fulfilled, (state, action) => {
+                state[action.payload.todolist.id] = []
+            })
+            .addCase(todolistsThunk.removeTodolist.fulfilled, (state, action) => {
                 delete state[action.payload.id]
             })
-            .addCase(todolistsActions.setTodolists, (state, action) => {
-                action.payload.todolists.forEach((tl) => {
+            .addCase(todolistsThunk.fetchTodolists.fulfilled, (state, action) => {
+                action.payload.todolists.forEach((tl:any) => {
                     state[tl.id] = []
                 })
-            })
-            .addCase(todolistsThunk.fetchTodolists.fulfilled, (state, action) => {
-                   action.payload.todo.forEach((tl:any) => {
-                       state[tl.id] = []
-                   })
             })
             .addCase(clearTasksAndTodolists, () => {
                 return {}

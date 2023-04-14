@@ -2,6 +2,8 @@ import { Dispatch } from 'redux'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {authAPI} from "api/todolist-api";
 import {authActions} from "features/auth/auth-reducer";
+import {handleServerAppError, handleServerNetworkError} from "utils/error-utils";
+import {createAppAsyncThunk} from "utils/create-app-async-thunk";
 
 
 const initialState = {
@@ -12,6 +14,27 @@ const initialState = {
 
 export type AppInitialStateType = typeof initialState
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
+
+
+
+const initializeApp = createAppAsyncThunk<{ isLoggedIn: boolean }, void>
+('app/initializeApp', async (_, thunkAPI) => {
+    const {dispatch, rejectWithValue} = thunkAPI
+    try {
+        const res = await authAPI.me()
+        if (res.data.resultCode === 0) {
+            return {isLoggedIn: true}
+        } else {
+            handleServerAppError(res.data, dispatch);
+            return rejectWithValue(null)
+        }
+    } catch (e) {
+        handleServerNetworkError(e, dispatch)
+        return rejectWithValue(null)
+    } finally {
+        dispatch(appActions.setAppInitialized({isInitialized: true}));
+    }
+})
 
 
 const slice = createSlice({
@@ -32,6 +55,7 @@ const slice = createSlice({
 
 export const appReducer = slice.reducer
 export const appActions = slice.actions
+export const appThunks = {initializeApp}
 
 
 export const initializeAppTC = () => (dispatch: Dispatch) => {

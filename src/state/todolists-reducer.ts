@@ -3,7 +3,7 @@ import {handleServerAppError, handleServerNetworkError} from 'utils/error-utils'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {ResultCode, todolistsAPI, TodolistType} from "api/todolist-api";
 import {createAppAsyncThunk} from "utils/create-app-async-thunk";
-import {Todolist} from "Todolist";
+
 
 
 const fetchTodolists = createAppAsyncThunk<any, any>
