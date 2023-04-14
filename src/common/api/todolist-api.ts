@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {AddTaskArgType} from "state/tasks-reducer";
+import {AddTaskArgType} from "features/TodolistsList/tasks-reducer";
 
 const settings = {
     withCredentials: true,

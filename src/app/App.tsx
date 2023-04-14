@@ -14,12 +14,12 @@ import {
     Typography
 } from '@mui/material';
 import { Menu } from '@mui/icons-material'
-import { useAppDispatch } from 'hooks/useAppDispatch';
-import {TodolistsList} from "ListTodo";
-import {ErrorSnackbar} from "components/ErrorSnackbar";
-import {AppRootStateType} from "state/store";
+import { useAppDispatch } from 'common/hooks/useAppDispatch';
+import {TodolistsList} from "features/TodolistsList/ListTodo";
+import {ErrorSnackbar} from "common/components/ErrorSnackbar";
+import {AppRootStateType} from "app/store";
 import {authThunks} from "features/auth/auth-reducer";
-import {selectIsLoggedIn} from "selectors/selectAuth/selectAuth";
+import {selectIsLoggedIn} from "common/selectors/selectAuth/selectAuth";
 import {initializeAppTC, RequestStatusType} from "app/app-reducer";
 
 type PropsType = {

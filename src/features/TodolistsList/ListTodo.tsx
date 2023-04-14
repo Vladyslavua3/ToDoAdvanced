@@ -3,17 +3,17 @@ import { useSelector } from 'react-redux'
 import {
     FilterValuesType,
     todolistsActions, todolistsThunk
-} from 'state/todolists-reducer'
+} from 'features/TodolistsList/todolists-reducer'
 import { Grid, Paper } from '@mui/material'
 import { Navigate } from 'react-router-dom'
-import { useAppDispatch } from 'hooks/useAppDispatch';
-import {tasksThunk} from "state/tasks-reducer";
-import {TaskStatuses} from "api/todolist-api";
-import {AddItemForm} from "components/AddItemForm";
-import {Todolist} from "Todolist";
-import {selectToDo} from "selectors/selectTodo/selectTodo";
-import {selectTask} from "selectors/selectTask/selectTask";
-import {selectIsLoggedIn} from "selectors/selectAuth/selectAuth";
+import { useAppDispatch } from 'common/hooks/useAppDispatch';
+import {tasksThunk} from "features/TodolistsList/tasks-reducer";
+import {TaskStatuses} from "common/api/todolist-api";
+import {AddItemForm} from "common/components/AddItemForm";
+import {Todolist} from "features/TodolistsList/TodoList/Todolist";
+import {selectToDo} from "common/selectors/selectTodo/selectTodo";
+import {selectTask} from "common/selectors/selectTask/selectTask";
+import {selectIsLoggedIn} from "common/selectors/selectAuth/selectAuth";
 
 type PropsType = {
     demo?: boolean

@@ -1,10 +1,10 @@
-import {handleServerAppError, handleServerNetworkError} from 'utils/error-utils'
-import {createAppAsyncThunk} from "utils/create-app-async-thunk";
+import {handleServerAppError, handleServerNetworkError} from 'common/utils/error-utils'
+import {createAppAsyncThunk} from "common/utils/create-app-async-thunk";
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import { clearTasksAndTodolists } from 'common/actions/common.actions';
 import {appActions} from "app/app-reducer";
-import {todolistsActions, todolistsThunk} from "state/todolists-reducer";
-import {ResultCode, TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelType} from "api/todolist-api";
+import {todolistsActions, todolistsThunk} from "features/TodolistsList/todolists-reducer";
+import {ResultCode, TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelType} from "common/api/todolist-api";
 
 
 

@@ -1,8 +1,8 @@
-import { authAPI, LoginParamsType } from 'api/todolist-api'
-import { handleServerAppError, handleServerNetworkError } from 'utils/error-utils'
+import { authAPI, LoginParamsType } from 'common/api/todolist-api'
+import { handleServerAppError, handleServerNetworkError } from 'common/utils/error-utils'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { appActions } from 'app/app-reducer';
-import {createAppAsyncThunk} from "utils/create-app-async-thunk";
+import {createAppAsyncThunk} from "common/utils/create-app-async-thunk";
 import {clearTasksAndTodolists} from "common/actions/common.actions";
 
 

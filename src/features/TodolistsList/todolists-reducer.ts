@@ -1,8 +1,8 @@
 import {appActions, RequestStatusType} from 'app/app-reducer'
-import {handleServerAppError, handleServerNetworkError} from 'utils/error-utils'
+import {handleServerAppError, handleServerNetworkError} from 'common/utils/error-utils'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {ResultCode, todolistsAPI, TodolistType} from "api/todolist-api";
-import {createAppAsyncThunk} from "utils/create-app-async-thunk";
+import {ResultCode, todolistsAPI, TodolistType} from "common/api/todolist-api";
+import {createAppAsyncThunk} from "common/utils/create-app-async-thunk";
 
 
 
