@@ -3,7 +3,7 @@ import {createAppAsyncThunk} from "utils/create-app-async-thunk";
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import { clearTasksAndTodolists } from 'common/actions/common.actions';
 import {appActions} from "app/app-reducer";
-import {todolistsActions} from "state/todolists-reducer";
+import {todolistsActions, todolistsThunk} from "state/todolists-reducer";
 import {ResultCode, TaskPriorities, TaskStatuses, TaskType, todolistsAPI, UpdateTaskModelType} from "api/todolist-api";
 
 
@@ -28,7 +28,7 @@ const fetchTasks = createAppAsyncThunk<FetchTaskReturnedType,string>
         // dispatch(tasksActions.setTasks({tasks, todolistId}))
         dispatch(appActions.setAppStatus({status: 'succeeded'}))
 
-        return {tasks, todolistId}
+        return {tasks,todolistId}
     }
     catch (e) {
         handleServerNetworkError(e, dispatch)
@@ -184,6 +184,11 @@ const slice = createSlice({
                 action.payload.todolists.forEach((tl) => {
                     state[tl.id] = []
                 })
+            })
+            .addCase(todolistsThunk.fetchTodolists.fulfilled, (state, action) => {
+                   action.payload.todo.forEach((tl:any) => {
+                       state[tl.id] = []
+                   })
             })
             .addCase(clearTasksAndTodolists, () => {
                 return {}

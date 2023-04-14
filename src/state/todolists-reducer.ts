@@ -1,7 +1,6 @@
 import {appActions, RequestStatusType} from 'app/app-reducer'
 import {handleServerAppError, handleServerNetworkError} from 'utils/error-utils'
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import {AppThunk} from "state/store";
 import {ResultCode, todolistsAPI, TodolistType} from "api/todolist-api";
 import {createAppAsyncThunk} from "utils/create-app-async-thunk";
 import {Todolist} from "Todolist";
@@ -52,14 +51,6 @@ const addTodoList = createAppAsyncThunk<{todolist: TodolistType},{title:string}>
 })
 
 
-// export const changeTodolistTitleTC = (id: string, title: string): AppThunk => {
-//     return (dispatch) => {
-//         todolistsAPI.updateTodolist(id, title)
-//             .then((res) => {
-//                 dispatch(todolistsActions.changeTodolistTitle({id, title}))
-//             })
-//     }
-// }
 
 
 const changeTodoListTitle = createAppAsyncThunk<{ id: string, title: string }, { id: string, title: string }>

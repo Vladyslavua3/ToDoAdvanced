@@ -18,7 +18,7 @@ import { useAppDispatch } from 'hooks/useAppDispatch';
 import {TodolistsList} from "ListTodo";
 import {ErrorSnackbar} from "components/ErrorSnackbar";
 import {AppRootStateType} from "state/store";
-import {logoutTC} from "features/auth/auth-reducer";
+import {authThunks} from "features/auth/auth-reducer";
 import {selectIsLoggedIn} from "selectors/selectAuth/selectAuth";
 import {initializeAppTC, RequestStatusType} from "app/app-reducer";
 
@@ -37,7 +37,7 @@ function App({demo = false}: PropsType) {
     }, [])
 
     const logoutHandler = useCallback(() => {
-        dispatch(logoutTC())
+        dispatch(authThunks.logout())
     }, [])
 
     if (!isInitialized) {
