@@ -5,8 +5,9 @@ import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import { Delete } from '@mui/icons-material';
 import { Task } from 'features/TodolistsList/TodoList/Task/Task'
-import {TaskStatuses, TaskType} from "common/api/todolist-api";
 import {FilterValuesType, TodolistDomainType} from "features/TodolistsList/todolists-reducer";
+import {TaskType} from "features/TodolistsList/todolist.api";
+import {TaskStatuses} from "common/enums";
 
 
 type PropsType = {
