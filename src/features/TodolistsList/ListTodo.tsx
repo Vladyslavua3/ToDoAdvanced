@@ -28,13 +28,11 @@ export const TodolistsList = () => {
         if (!isLoggedIn) {
             return;
         }
-        const thunk = todolistsThunks.fetchTodolists()
-        dispatch(thunk)
+        dispatch(todolistsThunks.fetchTodolists())
     }, [])
 
-    const removeTask = useCallback(function (id: string, todolistId: string) {
-        const thunk = tasksThunks.removeTask({taskId:id,todolistId:todolistId})
-        dispatch(thunk)
+    const removeTask = useCallback(function (taskId: string, todolistId: string) {
+        dispatch(tasksThunks.removeTask({taskId,todolistId}))
     }, [])
 
     const addTask = useCallback(function (title: string, todolistId: string) {
