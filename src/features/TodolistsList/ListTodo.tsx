@@ -3,17 +3,17 @@ import { useSelector } from 'react-redux'
 import {
     FilterValuesType,
     todolistsActions,  todolistsThunks
-} from 'features/TodolistsList/todolists-reducer'
+} from 'features/TodolistsList/TodoList/todolists-reducer'
 import { Grid, Paper } from '@mui/material'
 import { Navigate } from 'react-router-dom'
 import { useAppDispatch } from 'common/hooks/useAppDispatch';
 import {AddItemForm} from "common/components/AddItemForm";
 import {Todolist} from "features/TodolistsList/TodoList/Todolist";
-import {tasksThunks} from "features/TodolistsList/tasks-reducer";
+import {tasksThunks} from "features/TodolistsList/Task/tasks-reducer";
 import {TaskStatuses} from "common/enums";
-import {selectTasks} from "features/TodolistsList/tasks.selector";
+import {selectTasks} from "features/TodolistsList/Task/tasks.selector";
 import {selectIsLoggedIn} from "features/auth/auth.selectors";
-import {selectTodolists} from "features/TodolistsList/todolist.selectors";
+import {selectTodolists} from "features/TodolistsList/TodoList/todolist.selectors";
 
 
 export const TodolistsList = () => {
