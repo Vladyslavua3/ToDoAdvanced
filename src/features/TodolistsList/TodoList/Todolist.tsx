@@ -6,10 +6,10 @@ import Button from '@mui/material/Button';
 import { Delete } from '@mui/icons-material';
 import { Task } from 'features/TodolistsList/Task/Task'
 import {FilterValuesType, TodolistDomainType} from "features/TodolistsList/TodoList/todolists-reducer";
-import {TaskType} from "features/TodolistsList/TodoList/todolist.api";
 import {TaskStatuses} from "common/enums";
 import {tasksThunks} from "features/TodolistsList/Task/tasks-reducer";
 import {useAppDispatch} from "common/hooks/useAppDispatch";
+import {TaskType} from "features/TodolistsList/Task/tasks.api";
 
 
 type PropsType = {
